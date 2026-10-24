@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Video extends Model
 {
@@ -20,6 +21,9 @@ class Video extends Model
         'sort_order',
         'is_active',
         'provider',
+        'views_count',
+        'likes_count',
+        'comments_count',
     ];
 
     protected function casts(): array
@@ -29,6 +33,23 @@ class Video extends Model
             'sort_order' => 'integer',
             'video_size_bytes' => 'integer',
             'is_active' => 'boolean',
+            'views_count' => 'integer',
+            'likes_count' => 'integer',
+            'comments_count' => 'integer',
         ];
+    }
+
+    public function getThumbnailDisplayUrlAttribute(): ?string
+    {
+        if (! $this->thumbnail_url) {
+            return null;
+        }
+
+        if (str_starts_with($this->thumbnail_url, 'http://')
+            || str_starts_with($this->thumbnail_url, 'https://')) {
+            return $this->thumbnail_url;
+        }
+
+        return Storage::disk('public')->url($this->thumbnail_url);
     }
 }

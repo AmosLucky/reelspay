@@ -8,7 +8,7 @@ use RuntimeException;
 
 class FirestoreService
 {
-    private string $projectId = 'data-miner-game';
+    private string $projectId = 'jobs-in-canada-bc85f';
 
     private function getAccessToken(): string
     {
