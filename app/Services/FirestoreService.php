@@ -132,4 +132,47 @@ class FirestoreService
 
         return $encoded;
     }
+
+
+    
+public function testConnection(): array
+{
+    $token = $this->getAccessToken();
+
+    $url = sprintf(
+        'https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents/connection_tests?documentId=laravel_connection_test',
+        $this->projectId
+    );
+
+    $response = Http::withToken($token)
+        ->timeout(20)
+        ->post($url, [
+            'fields' => [
+                'message' => [
+                    'stringValue' => 'Laravel connected successfully',
+                ],
+                'project_id' => [
+                    'stringValue' => $this->projectId,
+                ],
+                'tested_at' => [
+                    'timestampValue' => now()->toIso8601String(),
+                ],
+            ],
+        ]);
+
+    if (!$response->successful()) {
+        throw new RuntimeException(
+            'Firestore test failed: ' .
+            $response->status() . ' ' .
+            $response->body()
+        );
+    }
+
+    return [
+        'project_id' => $this->projectId,
+        'document' => 'connection_tests/laravel_connection_test',
+        'status' => 'written',
+    ];
+}
+
 }

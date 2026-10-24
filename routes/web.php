@@ -8,6 +8,27 @@ use App\Http\Controllers\TikTokController;
 use App\Http\Controllers\TikTokLibraryController;
 use Illuminate\Support\Facades\Route;
 
+
+use App\Services\FirestoreService;
+
+Route::get('/test-firestore', function (FirestoreService $firestore) {
+    try {
+        return response()->json([
+            'success' => true,
+            'message' => 'Firestore test completed.',
+            'result' => $firestore->testConnection(),
+        ]);
+    } catch (\Throwable $e) {
+        report($e);
+
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+});
+
+
 Route::get('/admin/login', [AdminAuthController::class, 'create'])
     ->middleware('guest')
     ->name('login');
