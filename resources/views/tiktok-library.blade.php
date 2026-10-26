@@ -66,7 +66,9 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('tiktok-library.import') }}">
+        <form method="POST" action="{{ isset($guestUploadToken) && $guestUploadToken !== null
+            ? route('tiktok-library.guest-import', ['token' => $guestUploadToken])
+            : route('tiktok-library.import') }}">
             @csrf
 
             <label for="urls">TikTok URLs</label>
@@ -161,8 +163,12 @@
                                                         <td>{{ $episode->is_active ? 'Active' : 'Hidden' }}</td>
                                                         <td>
                                                             <div class="video-actions">
-                                                                <a href="{{ route('tiktok-library.edit', $episode) }}">Edit</a>
-                                                                <form method="POST" action="{{ route('tiktok-library.destroy', $episode) }}"
+                                                                <a href="{{ isset($guestUploadToken) && $guestUploadToken !== null
+                                                                    ? route('tiktok-library.guest-edit', ['token' => $guestUploadToken, 'video' => $episode])
+                                                                    : route('tiktok-library.edit', $episode) }}">Edit</a>
+                                                                <form method="POST" action="{{ isset($guestUploadToken) && $guestUploadToken !== null
+                                                                    ? route('tiktok-library.guest-destroy', ['token' => $guestUploadToken, 'video' => $episode])
+                                                                    : route('tiktok-library.destroy', $episode) }}"
                                                                     onsubmit="return confirm('Delete this video and its stored files?')">
                                                                     @csrf
                                                                     @method('DELETE')

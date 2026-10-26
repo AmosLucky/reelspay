@@ -16,7 +16,9 @@
 
 @section('content')
     <main class="panel">
-        <p><a href="{{ route('tiktok-library.index') }}">Back to video library</a></p>
+        <p><a href="{{ isset($guestUploadToken) && $guestUploadToken !== null
+            ? route('tiktok-library.guest-upload', ['token' => $guestUploadToken])
+            : route('tiktok-library.index') }}">Back to video library</a></p>
         <h1>Edit video</h1>
 
         @if ($errors->any())
@@ -27,7 +29,9 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('tiktok-library.update', $video) }}">
+        <form method="POST" action="{{ isset($guestUploadToken) && $guestUploadToken !== null
+            ? route('tiktok-library.guest-update', ['token' => $guestUploadToken, 'video' => $video])
+            : route('tiktok-library.update', $video) }}">
             @csrf
             @method('PUT')
 

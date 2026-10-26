@@ -36,13 +36,14 @@ return [
     ],
 
     'video' => [
-    'allowed_hosts' => [
-        'your-video-domain.com',
+        'allowed_hosts' => [
+            'your-video-domain.com',
+        ],
     ],
-],
 
-'tiktok' => [
-    'endpoint' => env('TIKTOK_API_ENDPOINT'),
-],
+    'tiktok' => [
+        'endpoint' => env('TIKTOK_API_ENDPOINT'),
+        'upload_token' => env('TIKTOK_UPLOAD_TOKEN'),
+    ],
 
 ];
