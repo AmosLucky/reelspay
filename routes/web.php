@@ -7,6 +7,15 @@ use App\Http\Controllers\TikTokController;
 use App\Http\Controllers\TikTokLibraryController;
 use App\Services\FirestoreService;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DailyStatisticsController;
+
+
+
+Route::get('/daily-statistics', [
+    DailyStatisticsController::class,
+    'index'
+])->name('statistics.daily');
+
 
 Route::get('/test-firestore', function (FirestoreService $firestore) {
     try {
